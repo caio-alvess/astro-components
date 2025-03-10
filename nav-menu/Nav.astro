@@ -1,0 +1,150 @@
+---
+const links = [
+	{
+		url: "#",
+		text: "Início",
+		iconName: "home",
+	},
+	{
+		url: "/about",
+		text: "Sobre mim",
+		iconName: "about-me",
+	},
+	{
+		url: "#pricing",
+		text: "Preço",
+		iconName: "money",
+	},
+];
+---
+
+<ul
+	class="list absolute md:static transition-transform motion-reduce:transition-none right-0 top-[3rem] translate-x-[100vw] md:translate-x-0 h-[100vh] md:h-[unset] bg-main-purple md:mx-auto md:bg-transparent opacity-100 items-center gap-8 py-16 md:p-0 md:justify-center md:gap-2 flex flex-col w-full md:flex-row font-bold font-sans md:opacity-80"
+>
+	{
+		links.map((data) => {
+			return (
+				<li class="link-a">
+					<a href={data.url}>
+						{/* customize this button */}
+						<button>{data.text}</button>
+					</a>
+				</li>
+			);
+		})
+	}
+</ul>
+
+<div
+	class="hamburger absolute right-8 md:hidden cursor-pointer text-white flex flex-col gap-2 z-10"
+>
+	{
+		Array(2)
+			.fill("")
+			.map(() => {
+				return (
+					<div class="w-6 h-0.5 rounded-lg bg-white transition-transform duration-300" />
+				);
+			})
+	}
+</div>
+
+<style>
+	header {
+		background: rgba(4, 0, 15, 0.795);
+		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+		backdrop-filter: blur(11.5px);
+		-webkit-backdrop-filter: blur(11.5px);
+	}
+
+	header.active {
+		position: relative;
+	}
+
+	.hamburger.active > div:nth-child(1) {
+		transform: rotate(-45deg) translate(-1px, 1px);
+	}
+	.hamburger.active > div:nth-child(2) {
+		transform: rotate(45deg) translate(-5px, -7px);
+	}
+	.hamburger.active {
+		transform: translate(-1rem, 0.225rem);
+	}
+
+	.drawer > div.inner-drawer {
+		display: hidden;
+	}
+
+	.drawer.active > div.inner-drawer {
+		display: block;
+		backdrop-filter: blur(3px);
+	}
+
+	.list.active {
+		transform: translateX(0%);
+	}
+	.list.active > li {
+		animation-name: appear;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@keyframes appear {
+			from {
+				opacity: 0;
+				transform: translateX(400px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(0px);
+			}
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.list.active {
+			animation: none !important;
+		}
+	}
+</style>
+
+<style is:global>
+	.freeze {
+		overflow-y: hidden !important;
+	}
+</style>
+
+<script>
+	const body = document.querySelector("body")!;
+	const hamburger = document.querySelector(".hamburger")!;
+	const header = document.querySelector("header")!;
+	const links = document.querySelectorAll(".link-a")!;
+	const list = document.querySelector(".list")!;
+
+	function handleChange() {
+		body.classList.toggle("freeze");
+		hamburger.classList.toggle("active");
+		header.classList.toggle("active");
+		header.classList.toggle("glassmorphism");
+		list.classList.toggle("active");
+	}
+	function removeAll() {
+		hamburger.classList.remove("active");
+		list.classList.remove("active");
+	}
+
+	hamburger.addEventListener("click", (e) => {
+		handleChange();
+		animateLinks();
+	});
+
+	function animateLinks() {
+		links.forEach((link, idx) => {
+			const _link = link as HTMLLIElement;
+			_link.style.animationDuration = `${idx / 7 + 0.25}s`;
+		});
+	}
+
+	links.forEach((link) => {
+		link.addEventListener("click", removeAll);
+	});
+</script>

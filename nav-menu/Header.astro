@@ -1,0 +1,27 @@
+---
+import Nav from "./Nav.astro";
+---
+
+<header
+	class="glassmorphism md:container w-full xl:w-2/4 xl:px-5 mx-auto rounded-md transition-all duration-200 ease-in z-50 sticky top-0 rounded-t-none md:rounded-t-md md:top-2 flex py-3 justify-center md:justify-between items-center border-black"
+>
+	<div class="flex items-center gap-1 font-cascadiaMono">
+		<a href="#" class="flex gap-1">
+			<!--1 - INSERT YOUR LOGO HERE --> LOGO
+		</a>
+	</div>
+	<Nav />
+</header>
+
+<style>
+	/* optional effect */
+	.glassmorphism {
+		background-color: hsla(216, 28%, 7%, 0.438);
+		backdrop-filter: blur(20px);
+	}
+
+	.active {
+		background-color: red /* 2 - USE YOUR BACKGROUND COLOR HERE */;
+		border-radius: 0;
+	}
+</style>
