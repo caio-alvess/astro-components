@@ -1,0 +1,104 @@
+---
+interface Accordion {
+	title: string /* <h3> tag */;
+	content: string /* <p> tag */;
+}
+
+type Props = {
+	content: Accordion[];
+};
+
+const {content} = Astro.props;
+---
+
+{
+	content.map((accordion, idx) => {
+		return (
+			<div class="border-b -pb-4 border-primary/30">
+				<button
+					id={"accordion-btn-" + idx}
+					class="accordion-btn w-full flex justify-between items-center py-3 text-primary"
+				>
+					<h3 class="font-semibold text-lg">{accordion.title}</h3>
+					<span id={"icon-" + idx} class="transition-transform duration-300">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							class="chevron w-4 h-4"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</span>
+				</button>
+				<div
+					id={"accordion-" + idx}
+					class="content max-h-0 inline-block overflow-hidden transition-all duration-300 ease-in-out"
+				>
+					<p
+						class="pb-5 text-sm text-primary/80"
+						set:html={accordion.content}
+					/>
+				</div>
+			</div>
+		);
+	})
+}
+
+<style>
+	.chevron {
+		transition: transform 200ms ease-in-out;
+	}
+
+	.active .chevron {
+		transform: rotate(180deg);
+	}
+</style>
+
+<script>
+	const buttons = document.querySelectorAll(
+		".accordion-btn"
+	) as NodeListOf<HTMLButtonElement>;
+
+	const contents = document.querySelectorAll(
+		".content"
+	) as NodeListOf<HTMLDivElement>;
+
+	function closeAll() {
+		contents.forEach((content) => {
+			content.style.maxHeight = "0";
+			const icon = document.querySelector(
+				`#icon-${content.id[content.id.length - 1]}`
+			) as HTMLDivElement;
+
+			icon.classList.remove("active");
+		});
+	}
+
+	buttons.forEach((btn, idx) => {
+		btn.addEventListener("click", () => {
+			toggleAccordion(idx);
+		});
+	});
+
+	function toggleAccordion(index: string | number) {
+		const content = document.querySelector(
+			`#accordion-${index}`
+		) as HTMLDivElement;
+
+		const icon = document.querySelector(`#icon-${index}`) as HTMLSpanElement;
+
+		if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+			content.style.maxHeight = "0";
+			icon.classList.toggle("active");
+		} else {
+			closeAll();
+			content.style.maxHeight = content.scrollHeight + "px";
+			icon.classList.toggle("active");
+		}
+	}
+</script>

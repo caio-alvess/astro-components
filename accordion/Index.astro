@@ -1,0 +1,20 @@
+---
+import Accordion from "./Accordion.astro";
+
+const accordions = [
+	{
+		title: "Question 1",
+		content: "Lorem <strong>impsum</strong> dolor sit amet consectetur",
+	},
+	{
+		title: "Question 2",
+		content: "Lorem <strong>impsum</strong> dolor sit amet consectetur",
+	},
+];
+---
+
+<div class="w-3/4 lg:w-1/4 mx-auto mb-40">
+	<h3 class="text-center mb-5">FAQ</h3>
+
+	<Accordion content={accordions} />
+</div>
